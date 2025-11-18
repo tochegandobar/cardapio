@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tô Chegando Bar</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="icon" type="image/png" href="img/logo.png">
 
 <style>
 
@@ -271,13 +272,27 @@
 
     <!-- BOTÃO ENVIAR -->
     <button onclick="enviarPedido()">📲 Enviar pedido via WhatsApp</button>
+    <button id="btnFecharConta">Solicitar fechamento da conta (WhatsApp)</button>
   </div>
   
-  <!-- BOTÃO FLUTUANTE WHATSAPP -->
-  <a href="https://wa.me/552420198207" target="_blank" class="whatsapp-float">💬</a>
-
 <script>
 const numero = "552420198207";
+
+  const btn = document.getElementById('btnFecharConta');
+    
+    btn.addEventListener('click', () => {
+  const texto = `Solicito fechamento da conta`;
+  // usar whatsapp:// para abrir app se existir; fallback para web
+  if (numero) {
+    // abrir direto para número
+    const url = `https://wa.me/${numero}?text=${encodeURIComponent(texto)}`;
+    window.open(url, '_blank');
+  } else {
+    // abrir apenas com texto (vai abrir WhatsApp Web ou app)
+    const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(texto)}`;
+    window.open(url, '_blank');
+  }
+});
   
 // ========== PRODUTOS ==========
 const produtos = [
@@ -396,7 +411,7 @@ const produtos = [
     { nome: "Steinhager - tirinho", preco: 5.00, categoria: "Destilados", img: "./destilados/stein.jpg" },
     { nome: "Steinhager - dose", preco: 10.00, categoria: "Destilados", img: "./destilados/stein.jpg" },
     { nome: "Tequila - dose", preco: 15.00, categoria: "Destilados", img: "./sem_imagem/sem_foto.jpg" },
-    { nome: "Trassado - dose", preco: 5.00, categoria: "Destilados", img: "./sem_imagem/sem_foto.jpg" },
+    { nome: "Trassado - dose", preco: 5.00, categoria: "Destilados", img: "./sem_imagem/sem_foto.jpg", pedirSabor: true  },
     { nome: "Velho Barreiro - dose", preco: 5.00, categoria: "Destilados", img: "./destilados/velho.webp" },
     { nome: "Whisky Ballantines (8 anos) - tirinho", preco: 10.00, categoria: "Destilados", img: "./destilados/ball.jpg" },
     { nome: "Whisky Ballantines (8 anos) - dose", preco: 18.00, categoria: "Destilados", img: "./destilados/ball.jpg" },
@@ -465,9 +480,9 @@ const produtos = [
     { nome: "Calabresa acebolada - Pequena", preco: 24.90, categoria: "Porções", img: "./sem_imagem/sem_foto.jpg" },
     { nome: "Calabresa acebolada - Grande", preco: 39.90, categoria: "Porções", img: "./sem_imagem/sem_foto.jpg" },
     { nome: "Coração acebolado - Pequena", preco: 35.90, categoria: "Porções", img: "./sem_imagem/sem_foto.jpg" },
-    { nome: "Coração acebolado - Grande", preco: 59.90, categoria: "Porções", img: "./sem_imagem/sem_foto.jpg" },
+    { nome: "Coração acebolado - Grande", preco: 63.90, categoria: "Porções", img: "./sem_imagem/sem_foto.jpg" },
     { nome: "Filé de frango acebolado ou com alho - Pequena", preco: 28.90, categoria: "Porções", img: "./sem_imagem/sem_foto.jpg" },
-    { nome: "Filé de frango acebolado ou com alho - Grande", preco: 52.90, categoria: "Porções", img: "./sem_imagem/sem_foto.jpg" },
+    { nome: "Filé de frango acebolado ou com alho - Grande", preco: 55.90, categoria: "Porções", img: "./sem_imagem/sem_foto.jpg" },
     { nome: "Linguiça mineira acebolada - Pequena", preco: 24.90, categoria: "Porções", img: "./sem_imagem/sem_foto.jpg" },
     { nome: "Linguiça mineira acebolada - Grande", preco: 44.90, categoria: "Porções", img: "./sem_imagem/sem_foto.jpg" },
     { nome: "Mista (carne bovina, linguiça, frango e batata) - Pequena", preco: 53.90, categoria: "Porções", img: "./sem_imagem/sem_foto.jpg" },
@@ -506,6 +521,8 @@ const produtos = [
     { nome: "Bala Macia - unidade", preco: 0.20, categoria: "Diversos", img: "./diversos/macia.jpg" },
     { nome: "Barra de Chocolate", preco: 10, categoria: "Diversos", img: "./sem_imagem/sem_foto.jpg" },
     { nome: "Batata Chips", preco: 4, categoria: "Diversos", img: "./sem_imagem/sem_foto.jpg" },
+    { nome: "Batata Gulao", preco: 4, categoria: "Diversos", img: "./diversos/batgul.webp" },
+    { nome: "Biscoito Salgadinho Camarão", preco: 3.50, categoria: "Diversos", img: "./diversos/salcam.webp" },
     { nome: "Biscoito Recheado", preco: 5, categoria: "Diversos", img: "./sem_imagem/sem_foto.jpg", pedirSabor: true },
     { nome: "Bombom", preco: 2, categoria: "Diversos", img: "./sem_imagem/sem_foto.jpg" },
     { nome: "Bubaloo", preco: 0.50, categoria: "Diversos", img: "./diversos/bubaloo.jpg" },
@@ -539,7 +556,7 @@ const produtos = [
     { nome: "Dunhill Double Refresh", preco: 14, categoria: "Cigarros", img: "./cigarros/dunhill_double_refresh.jpg" },
     { nome: "Dunhill (Vermelho ou Azul)", preco: 14, categoria: "Cigarros", img: "./cigarros/dunhill.jpg", pedirSabor: true },
     { nome: "Dunhill On (Vermelho ou Azul)", preco: 11.25, categoria: "Cigarros", img: "./cigarros/dunhill_on.jpg", pedirSabor: true },
-    { nome: "Gudan Garan", preco: 30, categoria: "Cigarros", img: "./sem_imagem/sem_foto.jpg" },
+    { nome: "Gudan Garan", preco: 30, categoria: "Cigarros", img: "./cigarros/gudang.webp" },
     { nome: "Kent (Vermelho, Azul ou Prata)", preco: 11.50, categoria: "Cigarros", img: "./cigarros/kent.jpg", pedirSabor: true },
     { nome: "Luck Strike (Vermelho ou Azul)", preco: 11.25, categoria: "Cigarros", img: "./cigarros/lucky_orig.jpg", pedirSabor: true },
     { nome: "Luck Strike Double", preco: 11.75, categoria: "Cigarros", img: "./cigarros/lucky_doub.jpg" },
